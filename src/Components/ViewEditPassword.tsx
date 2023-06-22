@@ -28,7 +28,6 @@ const ViewEditPassword = ({
 	const websiteRef = useRef<HTMLInputElement>(null)
 	const passwordRef = useRef<HTMLInputElement>(null)
 	const { token, masterKey } = useStore()
-
 	const { data } = useSWR<ViewPasswordResponseType>(
 		[`${BASE_URL}/password/get/${passId}`, token],
 		// eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -66,7 +65,7 @@ const ViewEditPassword = ({
 				toast.update(id, { render: "Saving Password ..." })
 			}
 		)
-		const data = await fetch(`${BASE_URL}/password/update`, {
+		const saveData = await fetch(`${BASE_URL}/password/update`, {
 			method: "POST",
 			headers: {
 				"Content-Type": "application/json",
@@ -74,7 +73,7 @@ const ViewEditPassword = ({
 			},
 			body: JSON.stringify(passData),
 		}).then((res) => res.json())
-		if (data.status === "success") {
+		if (saveData.status === "success") {
 			toast.update(id, {
 				render: "Password Saved Successfully",
 				type: "success",
