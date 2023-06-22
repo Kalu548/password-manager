@@ -152,6 +152,7 @@ const CreatePassword = ({
 									</div>
 									<div className="items-center mt-4 p-6 pt-0 flex justify-between">
 										<button
+											type="button"
 											onClick={() => setOpen(false)}
 											className="inline-flex items-center justify-center rounded-md text-sm font-medium focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 ring-offset-background bg-red-500 text-white hover:bg-red-600 hover:bg-opacity-80 h-8 py-2 px-4"
 										>
