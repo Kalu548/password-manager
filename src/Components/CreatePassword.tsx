@@ -45,7 +45,6 @@ const CreatePassword = ({
 			username: passData.username,
 			url: passData.url,
 		}
-		console.log(body)
 		const data = await fetch(`${BASE_URL}/password/create`, {
 			method: "POST",
 			headers: {
