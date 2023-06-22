@@ -17,7 +17,7 @@ const CreatePassword = ({
 	const websiteRef = useRef<HTMLInputElement>(null)
 	const passwordRef = useRef<HTMLInputElement>(null)
 
-	const passData = {
+	let passData = {
 		name: nameRef.current?.value,
 		username: userNameRef.current?.value,
 		url: websiteRef.current?.value,
