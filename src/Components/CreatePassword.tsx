@@ -17,35 +17,42 @@ const CreatePassword = ({
 	const websiteRef = useRef<HTMLInputElement>(null)
 	const passwordRef = useRef<HTMLInputElement>(null)
 
-	let passData = {
-		name: nameRef.current?.value,
-		username: userNameRef.current?.value,
-		url: websiteRef.current?.value,
-		password: passwordRef.current?.value,
-	}
-
 	const { masterKey, token } = useStore()
 
 	const handleFormSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+		const passData = {
+			name: nameRef.current?.value,
+			username: userNameRef.current?.value,
+			url: websiteRef.current?.value,
+			password: passwordRef.current?.value,
+		}
 		e.preventDefault()
 		const id = toast.loading("Encrypting Password ...", {
 			draggable: true,
 			autoClose: 5000,
 		})
 		// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-		await generateEncryptedPassword(passData.password!, masterKey!).then(
-			(enc) => {
-				passData.password = enc
-				toast.update(id, { render: "Saving Password ..." })
-			}
-		)
+		const encryptedPassword = await generateEncryptedPassword(
+			passData.password!,
+			masterKey!
+		).then((enc) => {
+			toast.update(id, { render: "Saving Password ..." })
+			return enc
+		})
+		const body = {
+			password: encryptedPassword,
+			name: passData.name,
+			username: passData.username,
+			url: passData.url,
+		}
+		console.log(body)
 		const data = await fetch(`${BASE_URL}/password/create`, {
 			method: "POST",
 			headers: {
 				"Content-Type": "application/json",
 				Authorization: `Bearer ${token}`,
 			},
-			body: JSON.stringify(passData),
+			body: JSON.stringify(body),
 		}).then((res) => res.json())
 		if (data.status === "success") {
 			toast.update(id, {
@@ -152,8 +159,8 @@ const CreatePassword = ({
 									</div>
 									<div className="items-center mt-4 p-6 pt-0 flex justify-between">
 										<button
+											onClick={(e) => setOpen(false)}
 											type="button"
-											onClick={() => setOpen(false)}
 											className="inline-flex items-center justify-center rounded-md text-sm font-medium focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 ring-offset-background bg-red-500 text-white hover:bg-red-600 hover:bg-opacity-80 h-8 py-2 px-4"
 										>
 											Cancel
