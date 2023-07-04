@@ -12,6 +12,14 @@ export type UpdateMasterKeyResponseType = {
 	}
 }
 
+export type ExportPasswordResponseType = {
+	status: "error" | "success"
+	message: string
+	data?: {
+		download_url: string
+	}
+}
+
 export type PasswordDatatype = {
 	created_at: string
 	id: string

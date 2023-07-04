@@ -1,11 +1,23 @@
 import { Menu, Transition } from "@headlessui/react"
-import { LogOutIcon, Plus } from "lucide-react"
+import { DownloadIcon, LogOutIcon, Plus } from "lucide-react"
 import { Fragment, useState } from "react"
+import { ExportPasswordResponseType } from "../../types/apiResponseTypes"
+import { BASE_URL } from "../lib/consts"
 import { useStore } from "../store"
 import CreatePassword from "./CreatePassword"
 const Navbar = () => {
-	const { reset } = useStore()
+	const { reset, masterKey } = useStore()
 	const [createPassword, setCreatePassword] = useState(false)
+	const exportPassClick = async () => {
+		const data = (await fetch(
+			`${BASE_URL}/password/export_all?master_key=${masterKey}`
+		).then((res) => res.json)) as ExportPasswordResponseType
+		if (data.status === "success") {
+			window.open(`${BASE_URL}/${data.data!.download_url}`, "_blank")
+		} else {
+			console.log("Some error occured")
+		}
+	}
 	return (
 		<div>
 			<nav className="sticky bg-black z-30 top-0 w-full pb-6">
@@ -51,6 +63,13 @@ const Navbar = () => {
 									>
 										<LogOutIcon className="mr-2 h-5 w-5 text-md" />
 										Signout
+									</button>
+									<button
+										onClick={() => exportPassClick()}
+										className="text-gray-200 text-md hover:text-white group flex w-full items-center rounded-md px-2 py-2"
+									>
+										<DownloadIcon className="mr-2 h-5 w-5 text-md" />
+										Export Passwords
 									</button>
 								</Menu.Items>
 							</Transition>
