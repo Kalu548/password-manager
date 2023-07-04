@@ -16,7 +16,7 @@ const Navbar = () => {
 					Authorization: `Bearer ${token}`,
 				},
 			}
-		).then((res) => res.json)) as ExportPasswordResponseType
+		).then((res) => res.json()) as ExportPasswordResponseType
 		if (data.status === "success") {
 			window.open(`${BASE_URL}/${data.data!.download_url}`, "_blank")
 		} else {
